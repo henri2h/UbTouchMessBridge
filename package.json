@@ -1,0 +1,27 @@
+{
+  "name": "remotecontrolserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node -r esm index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Henri2h/RemoteControlServer.git"
+  },
+  "author": "henri2h",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Henri2h/RemoteControlServer/issues"
+  },
+  "homepage": "https://github.com/Henri2h/RemoteControlServer#readme",
+  "dependencies": {
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "facebook-chat-api": "git+https://github.com/Schmavery/facebook-chat-api.git",
+    "node-fetch": "^2.6.0",
+    "sqlite3": "^4.1.1"
+  }
+}

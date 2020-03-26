@@ -1,0 +1,7 @@
+{
+    "cert":"sslcert/server.crt",
+    "certKey":"sslcert//server.key",
+    "token":"<your token here>",
+    "email":"<email>",
+    "password":"<facebook account password>"
+}
