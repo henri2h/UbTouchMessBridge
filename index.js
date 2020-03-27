@@ -108,6 +108,8 @@ cl.connect((data) => {
 
 
 // functions :
+// check if all is well setup : use this to check if https is properly set
+app.get("/", (req, res, next) => { res.json({ "success": true }); });
 
 app.post("/listConversations", async (req, res, next) => {
     console.log("request");

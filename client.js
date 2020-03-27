@@ -44,6 +44,23 @@ export function connect(callback) {
                     if (err != null) console.log("Could not unlink file : ", err);
                 });*/
                 console.error(err);
+                
+                switch (err.error) {
+                    case 'login-approval':
+                        console.log('Enter code > ');
+                        rl.on('line', (line) => {
+                            err.continue(line);
+                            rl.close();
+
+                            console.log("Success : connected");
+                            fs.writeFileSync(fileName, JSON.stringify(api.getAppState()));
+                            callback({ success: true, api: api });
+                        });
+                        break;
+                    default:
+                        console.error(err);
+                }
+
                 callback({ success: false, error: err });
                 return;
             }
@@ -130,7 +147,7 @@ export function sendMessage(api, text, threadID) {
         // set typing indicator ...
         api.sendTypingIndicator(threadID);
 
-        var msg = {body:text};
+        var msg = { body: text };
         api.sendMessage(msg, threadID, (err, result) => {
             // in case of error
             if (err) return console.error(err);
