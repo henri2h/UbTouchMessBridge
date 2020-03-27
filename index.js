@@ -179,7 +179,7 @@ if (httpsEnabled) {
     var httpsServer = https.createServer(credentials, app);
     httpsServer.listen(8073, function () {
         var host = httpsServer.address().address
-        var port = httpServer.address().port
+        var port = httpsServer.address().port
         console.log("Bridge listening securely at https://%s:%s", host, port)
     });
 }
