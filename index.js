@@ -9,6 +9,8 @@ var https = require('https');
 
 const control = require("./controlServer");
 
+
+// first run ?
 if(getData() == "created") {
     console.log("");
     console.log("####################################################");
@@ -17,8 +19,11 @@ if(getData() == "created") {
     console.log("");
     process.exit();
 }
-// certificate and private key
 
+
+// not first run : continue
+
+// certificate and private key
 var httpsEnabled = false;
 try {
     var data = getData();
@@ -45,7 +50,7 @@ app.use(bodyParser.json())
 
 
 // get token : prevent use by other people
-var token = getData().token;
+var token = getData().app_token;
 
 // starting the app
 sendPushNotification("MessBridge", "Started");

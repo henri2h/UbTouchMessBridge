@@ -22,14 +22,14 @@ export function getData() {
 }
 
 export function getToken() {
-    return getData().token;
+    return getData().app_token;
 }
 
 export function createData() {
     var params = {
         cert: "path to certificate.crt",
         certKey: "path to certificate.key",
-        token: "",
+        app_token: "",
         email: "<your email>",
         password: "<your password>",
         push_device_token: ""
