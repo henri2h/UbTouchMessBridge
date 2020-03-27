@@ -12,7 +12,7 @@ export async function sendPushNotification(title, text) {
 
     var params = {
         "appid": "pushclient.christianpauly_pushclient",
-        "token": control.getToken().push_device_token,
+        "token": control.getData().push_device_token,
         "expire_on": approxExpire.toISOString(),
         "data": {
             "notification": {
@@ -42,7 +42,8 @@ export async function sendPushNotification(title, text) {
             
             // not success
             if(!response.ok)         {
-                console.log("Error :" + response.toString());
+                console.log("Push notification failed :")
+                console.log(response);
             }  
 
             return response.ok;
