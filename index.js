@@ -9,6 +9,14 @@ var https = require('https');
 
 const control = require("./controlServer");
 
+if(getData() == "created") {
+    console.log("");
+    console.log("####################################################");
+    console.log("#  data.json created : Please fill and restart...  #");
+    console.log("####################################################");
+    console.log("");
+    process.exit();
+}
 // certificate and private key
 
 var httpsEnabled = false;

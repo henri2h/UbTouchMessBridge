@@ -1,7 +1,8 @@
 {
-    "cert":"sslcert/server.crt",
-    "certKey":"sslcert//server.key",
-    "token":"<your token here>",
-    "email":"<email>",
-    "password":"<facebook account password>"
+	"cert": "path to certificate.crt",
+	"certKey": "path to certificate.key",
+	"token": "",
+	"email": "<your email>",
+	"password": "<your password>",
+	"push_device_token": ""
 }

@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const control = require("./controlServer");
 
 export default function () {
     console.log("Default");
@@ -11,7 +12,7 @@ export async function sendPushNotification(title, text) {
 
     var params = {
         "appid": "pushclient.christianpauly_pushclient",
-        "token": "cHVzaGNsaWVudC5jaHJpc3RpYW5wYXVseV9wdXNoY2xpZW50OjpiRmp2T2RLZ0Q4VDZUQkVrYTBmYm5na3dlNnNlYjQ1TlRtNGlLQT09",
+        "token": control.getToken().push_device_token,
         "expire_on": approxExpire.toISOString(),
         "data": {
             "notification": {
