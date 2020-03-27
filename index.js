@@ -11,7 +11,7 @@ const control = require("./controlServer");
 
 
 // first run ?
-if(getData() == "created") {
+if (getData() == "created") {
     console.log("");
     console.log("####################################################");
     console.log("#  data.json created : Please fill and restart...  #");
@@ -94,7 +94,7 @@ cl.connect((data) => {
 
                     console.log(title);
                     var result = sendPushNotification(title, event.body)
-                    if(!result){console.log("Could not send message");}
+                    if (!result) { console.log("Could not send message"); }
                     break;
                 case "event":
                     console.log(event);
@@ -177,13 +177,13 @@ app.post("/sendMessage", async (req, res, next) => {
 // https only if enabled, fallback to http
 if (httpsEnabled) {
     var httpsServer = https.createServer(credentials, app);
-
-    var host = httpsServer.address().address
-    var port = httpServer.address().port
-    console.log("Bridge listening securely at https://%s:%s", host, port)
-
+    httpsServer.listen(8073, function () {
+        var host = httpsServer.address().address
+        var port = httpServer.address().port
+        console.log("Bridge listening securely at https://%s:%s", host, port)
+    }
 }
-else{
+else {
     var httpServer = http.createServer(app);
     httpServer.listen(8070, function () {
         var host = httpServer.address().address
