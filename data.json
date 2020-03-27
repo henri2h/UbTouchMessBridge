@@ -1,8 +1,0 @@
-{
-	"cert": "path to certificate.crt",
-	"certKey": "path to certificate.key",
-	"token": "",
-	"email": "<your email>",
-	"password": "<your password>",
-	"push_device_token": ""
-}
