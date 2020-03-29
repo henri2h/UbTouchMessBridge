@@ -44,7 +44,7 @@ export function connect(callback) {
                     if (err != null) console.log("Could not unlink file : ", err);
                 });*/
                 console.error(err);
-                
+
                 switch (err.error) {
                     case 'login-approval':
                         console.log('Enter code > ');
@@ -94,10 +94,9 @@ export function getThreadInfo(api, threadID) {
 }
 
 
-export function getThreadHistory(api, threadID) {
+export function getThreadHistory(api, threadID, timestamp, count) {
     return new Promise(resolve => {
-        var timestamp = undefined;
-        api.getThreadHistory(threadID, 50, timestamp, (err, history) => {
+        api.getThreadHistory(threadID, count, timestamp, (err, history) => {
             // in case of error
             if (err) return console.error(err);
             /*
@@ -105,13 +104,6 @@ export function getThreadHistory(api, threadID) {
             that message will be included in this history so we can discard it unless it is the first load.
         */
             if (timestamp != undefined) history.pop();
-
-            /*
-                Handle message history
-            */
-
-            //timestamp = history[0].timestamp;
-
             resolve(history);
         });
     });
@@ -150,6 +142,18 @@ export function getUserInfo(api, id) {
 }
 
 
+export function searchForThread(api, name) {
+    return new Promise(resolve => {
+        api.searchForThread(name, (err, obj) => {
+            // in case of error
+            if (err) return console.error(err);
+            resolve(obj);
+        });
+    });
+}
+
+
+
 // messages
 export function sendMessage(api, text, threadID) {
     return new Promise(resolve => {
@@ -162,6 +166,40 @@ export function sendMessage(api, text, threadID) {
             // in case of error
             if (err) return console.error(err);
             resolve(result);
+        });
+    });
+}
+
+
+
+export function setMessageReaction(api, reaction, messageId) {
+    return new Promise(resolve => {
+        api.setMessageReaction(reaction, messageId, (err, obj) => {
+            // in case of error
+            if (err) return console.error(err);
+            resolve(obj);
+        });
+    });
+}
+
+
+export function setTitle(api, newTitle, threadID) {
+    return new Promise(resolve => {
+        api.setTitle(newTitle, threadID, (err, obj) => {
+            // in case of error
+            if (err) return console.error(err);
+            resolve(obj);
+        });
+    });
+}
+
+
+export function logout(api) {
+    return new Promise(resolve => {
+        api.logout((err, obj) => {
+            // in case of error
+            if (err) return console.error(err);
+            resolve(obj);
         });
     });
 }

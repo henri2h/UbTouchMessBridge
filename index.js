@@ -136,7 +136,7 @@ app.post("/listConversations", async (req, res, next) => {
 app.post("/getThreadHistory", async (req, res, next) => {
     console.log("request");
     if (req.body.token == token) {
-        res.json(await cl.getThreadHistory(api, req.body.threadID));
+        res.json(await cl.getThreadHistory(api, req.body.threadID, req.body.timestamp, req.body.messageCount));
     }
     else {
         res.json({ "success": false, "error": "bad token" });
@@ -174,6 +174,16 @@ app.post("/getUserInfo", async (req, res, next) => {
     }
 });
 
+app.post("/searchForThread", async (req, res, next) => {
+    console.log("request");
+    if (req.body.token == token) {
+        res.json(await cl.searchForThread(api, req.body.name));
+    }
+    else {
+        res.json({ "success": false, "error": "bad token" });
+    }
+});
+
 app.post("/getCurrentUserID", async (req,  res, next) =>{
     if (req.body.token == token) {
         res.json(await cl.getCurrentUserID(api));
@@ -189,6 +199,26 @@ app.post("/sendMessage", async (req, res, next) => {
     console.log("request");
     if (req.body.token == token) {
         res.json(await cl.sendMessage(api, req.body.text, req.body.threadID));
+    }
+    else {
+        res.json({ "success": false, "error": "bad token" });
+    }
+});
+
+app.post("/setMessageReaction", async (req, res, next) => {
+    console.log("request");
+    if (req.body.token == token) {
+        res.json(await cl.setMessageReaction(api, req.body.reaction, req.body.messageID));
+    }
+    else {
+        res.json({ "success": false, "error": "bad token" });
+    }
+});
+
+app.post("/setTitle", async (req, res, next) => {
+    console.log("request");
+    if (req.body.token == token) {
+        res.json(await cl.setTitle(api, req.body.newTitle, req.body.threadID));
     }
     else {
         res.json({ "success": false, "error": "bad token" });
