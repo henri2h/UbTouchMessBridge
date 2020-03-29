@@ -119,6 +119,16 @@ export function getThreadHistory(api, threadID) {
 
 
 // user :
+export function getCurrentUserID(api, name) {
+    return new Promise(resolve => {
+        api.getCurrentUserID((err, obj) => {
+            // in case of error
+            if (err) return console.error(err);
+            resolve(obj);
+        });
+    });
+}
+
 export function getUserID(api, name) {
     return new Promise(resolve => {
         api.getUserID(name, (err, obj) => {

@@ -62,44 +62,49 @@ cl.connect((data) => {
         api = data.api;
 
         api.listenMqtt(async (err, event) => {
-            if (err) {
-                console.log("Listening : error");
-                console.error(err);
-            }
+            try {
+                if (err) {
+                    console.log("Listening : error");
+                    console.error(err);
+                }
 
-            switch (event.type) {
-                case "message":
-                    console.log(event);
-                    console.log(event.threadID + " : " + event.body);
+                switch (event.type) {
+                    case "message":
+                        console.log(event);
+                        console.log(event.threadID + " : " + event.body);
 
-                    var uinfo = await cl.getUserInfo(api, event.senderID).catch(err => {
-                        console.log(err);
-                    });
-
-                    console.log(uinfo);
-
-                    var title = "";
-                    if (event.isGroup) { // group
-                        var tinfo = await cl.getThreadInfo(api, event.threadID).catch(err => {
+                        var uinfo = await cl.getUserInfo(api, event.senderID).catch(err => {
                             console.log(err);
-                        });;
-                        console.log("Group");
-                        console.log(tinfo);
+                        });
 
-                        title = uinfo[event.senderID].name + "@" + tinfo.name
-                    }
-                    else { // not group
-                        title = uinfo[event.senderID].name;
-                    }
+                        console.log(uinfo);
 
-                    console.log(title);
-                    var result = sendPushNotification(title, event.body)
-                    if (!result) { console.log("Could not send message"); }
-                    break;
-                case "event":
-                    console.log(event);
-                    break;
-                // case presence...
+                        var title = "";
+                        if (event.isGroup) { // group
+                            var tinfo = await cl.getThreadInfo(api, event.threadID).catch(err => {
+                                console.log(err);
+                            });;
+                            console.log("Group");
+                            console.log(tinfo);
+
+                            title = uinfo[event.senderID].name + "@" + tinfo.name
+                        }
+                        else { // not group
+                            title = uinfo[event.senderID].name;
+                        }
+
+                        console.log(title);
+                        var result = sendPushNotification(title, event.body)
+                        if (!result) { console.log("Could not send message"); }
+                        break;
+                    case "event":
+                        console.log(event);
+                        break;
+                    // case presence...
+                }
+            } catch (erro) {
+                // in case of error
+                console.log(error);
             }
 
         });
@@ -163,6 +168,15 @@ app.post("/getUserInfo", async (req, res, next) => {
     console.log("request");
     if (req.body.token == token) {
         res.json(await cl.getUserInfo(api, req.body.id));
+    }
+    else {
+        res.json({ "success": false, "error": "bad token" });
+    }
+});
+
+app.post("/getCurrentUserID", async (req,  res, next) =>{
+    if (req.body.token == token) {
+        res.json(await cl.getCurrentUserID(api));
     }
     else {
         res.json({ "success": false, "error": "bad token" });
