@@ -91,9 +91,17 @@ sendPushNotification("MessBridge", "Started");
 
 // login
 var api;
+var uID = "";
+
 cl.connect(logger, (data) => {
     if (data.success) {
         api = data.api;
+
+        cl.getCurrentUserID(api).then((val) => {
+            logger.info("Logged user id : " + uiID);
+            uID = val;
+        }).catch((err) => { logger.error("Could not get user id"); console.error(err); });
+        
 
         api.listenMqtt(async (err, event) => {
             try {
@@ -141,12 +149,7 @@ cl.connect(logger, (data) => {
         });
     }
 });
-var uID = "";
 
-cl.getCurrentUserID(api).then((val) => {
-    logger.info("Logged user id : " + uiID);
-    uID = val;
-}).catch((err) => { logger.error("Could not get user id"); console.error(err); });
 
 // enable cross origin
 app.use(function (req, res, next) {
