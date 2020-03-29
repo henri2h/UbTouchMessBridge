@@ -96,13 +96,6 @@ var uID = "";
 cl.connect(logger, (data) => {
     if (data.success) {
         api = data.api;
-
-        cl.getCurrentUserID(api).then((val) => {
-            logger.info("Current user logged in id : " + val);
-            uID = val;
-        }).catch((err) => { logger.error("Could not get user id"); console.error(err); });
-        
-
         api.listenMqtt(async (err, event) => {
             try {
                 if (err) {
@@ -236,7 +229,7 @@ app.post("/searchForThread", async (req, res, next) => {
 app.post("/getCurrentUserID", async (req, res, next) => {
     if (req.body.token == token) {
         logger.info("[" + getIp(req) + "] /getCurrentUserID");
-        res.json({ success: true, userid: uID });
+        res.json(await cl.getCurrentUserID());
     }
     else {
         logger.warn("[" + getIp(req) + "] /getCurrentUserID : wrong token");
