@@ -1,8 +1,8 @@
 import login from "facebook-chat-api";
 import fs from "fs";
+import { json } from "express";
 
 const control = require("./controlServer");
-import { sendPushNotification } from "./push";
 
 var fileName = "fappstate.json";
 
@@ -24,7 +24,6 @@ export function connect(logger, callback) {
         }
         else {
             var info = control.getData();
-            logger.info(info);
             data = { email: info.email, password: info.password };
         }
 
@@ -32,6 +31,7 @@ export function connect(logger, callback) {
         var params = {
             selfListen: false,
             listenEvents: false,
+            forceLogin:true,
             userAgent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:74.0) Gecko/20100101 Firefox/74.0"
         };
 
@@ -39,28 +39,12 @@ export function connect(logger, callback) {
             if (err) {
                 logger.error("Could not connect, check the browser, did you change password ?");
                 logger.error("If not, your account may have been banned");
-                /*fs.unlink(fileName, function (err) {
+                fs.unlink(fileName, function (err) {
                     //Do whatever else you need to do here
-                    if (err != null) logger.info("Could not unlink file : ", err);
-                });*/
-                console.error(err);
+                    if (err != null) logger.error("Could not unlink file : "  +JSON.stringify(err));
+                });
 
-                switch (err.error) {
-                    case 'login-approval':
-                        logger.info('Enter code > ');
-                        rl.on('line', (line) => {
-                            err.continue(line);
-                            rl.close();
-
-                            logger.info("Success : connected");
-                            fs.writeFileSync(fileName, JSON.stringify(api.getAppState()));
-                            callback({ success: true, api: api });
-                        });
-                        break;
-                    default:
-                        console.error(err);
-                }
-
+                logger.error(JSON.stringify(err));
                 callback({ success: false, error: err });
                 return;
             }

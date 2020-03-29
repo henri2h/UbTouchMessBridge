@@ -23,6 +23,7 @@
     "facebook-chat-api": "git+https://github.com/Schmavery/facebook-chat-api.git",
     "node-fetch": "^2.6.0",
     "sqlite3": "^4.1.1",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "winston-color": "^1.0.0"
   }
 }

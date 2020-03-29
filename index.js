@@ -10,14 +10,19 @@ var https = require('https');
 const control = require("./controlServer");
 
 // logger
+import { createLogger, format, transports } from "winston";
+import winston from "winston/lib/winston/config";
 
-const winston = require('winston');
+const myFormat = format.printf(({ level, message, timestamp }) => {
+    return `${level} : ${timestamp} : ${message}`;
+});
 
-const logger = winston.createLogger({
+const logger = createLogger({
     level: 'info',
-    format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json()
+    format: format.combine(
+        format.colorize(),
+        format.timestamp(),
+        myFormat
     ),
     defaultMeta: { service: 'user-service' },
     transports: [
@@ -25,8 +30,8 @@ const logger = winston.createLogger({
         // - Write all logs with level `error` and below to `error.log`
         // - Write all logs with level `info` and below to `combined.log`
         //
-        new winston.transports.File({ filename: 'error.log', level: 'error' }),
-        new winston.transports.File({ filename: 'combined.log' })
+        new transports.File({ filename: 'error.log', level: 'error' }),
+        new transports.File({ filename: 'combined.log' })
     ]
 });
 
@@ -35,11 +40,9 @@ const logger = winston.createLogger({
 // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
 // 
 if (process.env.NODE_ENV !== 'production') {
-    logger.add(new winston.transports.Console({
-        format: winston.format.simple()
-    }));
+    logger.add(new transports.Console());
 }
-
+logger.info("hello", { test: "x" });
 
 // first run ?
 if (getData() == "created") {
@@ -100,23 +103,18 @@ cl.connect(logger, (data) => {
 
                 switch (event.type) {
                     case "message":
-                        logger.info(event);
-                        logger.info(event.threadID + " : " + event.body);
+                        console.log(event);
+                        console.log(event.threadID + " : " + event.body);
 
                         var uinfo = await cl.getUserInfo(api, event.senderID).catch(err => {
                             console.log(err);
                         });
-
-                        console.log(uinfo);
 
                         var title = "";
                         if (event.isGroup) { // group
                             var tinfo = await cl.getThreadInfo(api, event.threadID).catch(err => {
                                 console.log(err);
                             });;
-                            console.log("Group");
-                            console.log(tinfo);
-
                             title = uinfo[event.senderID].name + "@" + tinfo.name
                         }
                         else { // not group
@@ -279,7 +277,7 @@ if (httpsEnabled) {
     httpsServer.listen(8073, function () {
         var host = httpsServer.address().address
         var port = httpsServer.address().port
-        console.log("Bridge listening securely at https://%s:%s", host, port)
+        logger.info("Bridge listening securely at https://" + host + ":" + port);
     });
 }
 else {
@@ -287,6 +285,6 @@ else {
     httpServer.listen(8070, function () {
         var host = httpServer.address().address
         var port = httpServer.address().port
-        console.log("Bridge listening (not secure !!!! for developpement purpose only) at http://%s:%s", host, port)
+        logger.warn("Bridge listening (not secure !!!! for developpement purpose only) at http://" + host + ":" + port)
     });
 }
