@@ -11,20 +11,20 @@ export default function () {
     return "";
 }
 
-export function connect(callback) {
+export function connect(logger, callback) {
 
     // Create simple echo bot
     fs.exists(fileName, fileExist => {
-        console.log("File exist : " + fileExist);
+        logger.info("File exist : " + fileExist);
 
         var data;
         if (fileExist) {
-            console.log("Getting from appstate");
+            logger.info("Getting from appstate");
             data = { appState: JSON.parse(fs.readFileSync(fileName, 'utf8')) };
         }
         else {
             var info = control.getData();
-            console.log(info);
+            logger.info(info);
             data = { email: info.email, password: info.password };
         }
 
@@ -37,22 +37,22 @@ export function connect(callback) {
 
         login(data, params, (err, api) => {
             if (err) {
-                console.log("Could not connect, check the browser, did you change password ?");
-                console.log("If not, your account may have been banned");
+                logger.error("Could not connect, check the browser, did you change password ?");
+                logger.error("If not, your account may have been banned");
                 /*fs.unlink(fileName, function (err) {
                     //Do whatever else you need to do here
-                    if (err != null) console.log("Could not unlink file : ", err);
+                    if (err != null) logger.info("Could not unlink file : ", err);
                 });*/
                 console.error(err);
 
                 switch (err.error) {
                     case 'login-approval':
-                        console.log('Enter code > ');
+                        logger.info('Enter code > ');
                         rl.on('line', (line) => {
                             err.continue(line);
                             rl.close();
 
-                            console.log("Success : connected");
+                            logger.info("Success : connected");
                             fs.writeFileSync(fileName, JSON.stringify(api.getAppState()));
                             callback({ success: true, api: api });
                         });
@@ -64,7 +64,7 @@ export function connect(callback) {
                 callback({ success: false, error: err });
                 return;
             }
-            console.log("Success : connected");
+            logger.info("Success : connected");
             fs.writeFileSync(fileName, JSON.stringify(api.getAppState()));
             callback({ success: true, api: api });
         });

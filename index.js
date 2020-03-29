@@ -88,21 +88,20 @@ sendPushNotification("MessBridge", "Started");
 
 // login
 var api;
-cl.connect((data) => {
+cl.connect(logger, (data) => {
     if (data.success) {
         api = data.api;
 
         api.listenMqtt(async (err, event) => {
             try {
                 if (err) {
-                    console.log("Listening : error");
-                    console.error(err);
+                    logger.error("Listening : error", err);
                 }
 
                 switch (event.type) {
                     case "message":
-                        console.log(event);
-                        console.log(event.threadID + " : " + event.body);
+                        logger.info(event);
+                        logger.info(event.threadID + " : " + event.body);
 
                         var uinfo = await cl.getUserInfo(api, event.senderID).catch(err => {
                             console.log(err);
