@@ -141,9 +141,12 @@ cl.connect(logger, (data) => {
         });
     }
 });
+var uID;
 
-var uiID = await cl.getCurrentUserID(api);
-logger.info("Logged user id : " + uiID);
+cl.getCurrentUserID(api).then((val) => {
+    logger.info("Logged user id : " + uiID);
+    uID = val;
+}).catch((err) => logger.error(JSON.stringify(err)));
 
 // enable cross origin
 app.use(function (req, res, next) {
@@ -230,7 +233,7 @@ app.post("/searchForThread", async (req, res, next) => {
 app.post("/getCurrentUserID", async (req, res, next) => {
     if (req.body.token == token) {
         logger.info("[" + getIp(req) + "] /getCurrentUserID");
-        res.json({success:true, userid:uiID});
+        res.json({ success: true, userid: uiID });
     }
     else {
         logger.warn("[" + getIp(req) + "] /getCurrentUserID : wrong token");
