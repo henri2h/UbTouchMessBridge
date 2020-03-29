@@ -12,7 +12,7 @@ export async function sendPushNotification(title, text) {
 
     var params = {
         "appid": "pushclient.christianpauly_pushclient",
-        "token": control.getData().push_device_token,
+        "token": control.getPushDeviceToken(),
         "expire_on": approxExpire.toISOString(),
         "data": {
             "notification": {

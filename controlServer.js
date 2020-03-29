@@ -13,7 +13,6 @@ export function getData() {
         return JSON.parse(fs.readFileSync(fileName, 'utf8'));
     }
     catch (error) {
-
         if (error.code == "ENOENT") {
             createData();
         }
@@ -23,6 +22,10 @@ export function getData() {
 
 export function getToken() {
     return getData().app_token;
+}
+
+export function getPushDeviceToken() {
+    return getData().push_device_token;
 }
 
 export function createData() {
