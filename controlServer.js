@@ -38,3 +38,7 @@ export function createData() {
     fs.writeFileSync(fileName, JSON.stringify(params, null, "\t"), 'utf8');
     console.log("Initialised : data.json created");
 }
+
+export function getIp(req){
+    return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+}
