@@ -142,6 +142,9 @@ cl.connect(logger, (data) => {
     }
 });
 
+var uiID = await cl.getCurrentUserID(api);
+logger.info("Logged user id : " + uiID);
+
 // enable cross origin
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -227,7 +230,7 @@ app.post("/searchForThread", async (req, res, next) => {
 app.post("/getCurrentUserID", async (req, res, next) => {
     if (req.body.token == token) {
         logger.info("[" + getIp(req) + "] /getCurrentUserID");
-        res.json(await cl.getCurrentUserID(api));
+        res.json({success:true, userid:uiID});
     }
     else {
         logger.warn("[" + getIp(req) + "] /getCurrentUserID : wrong token");
