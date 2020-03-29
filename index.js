@@ -15,7 +15,10 @@ const winston = require('winston');
 
 const logger = winston.createLogger({
     level: 'info',
-    format: winston.format.json(),
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json()
+    ),
     defaultMeta: { service: 'user-service' },
     transports: [
         //
@@ -36,6 +39,7 @@ if (process.env.NODE_ENV !== 'production') {
         format: winston.format.simple()
     }));
 }
+
 
 // first run ?
 if (getData() == "created") {
@@ -58,7 +62,6 @@ try {
     var certificate = fs.readFileSync(data.cert, 'utf8');
     httpsEnabled = true;
 } catch (error) {
-    console.log("Could not get certificate. Https disabled.");
     logger.warn("Could not get certificate. Https disabled.");
 }
 
@@ -155,6 +158,12 @@ app.use(function (req, res, next) {
 app.get("/", (req, res, next) => { res.json({ "success": true }); });
 
 app.post("/listConversations", async (req, res, next) => {
+
+
+    console.log(req);
+    console.log(res);
+    console.log(next);
+
     if (req.body.token == token) {
         logger.info("[" + getIp() + "] /listConversation");
         res.json(await cl.listData(api));

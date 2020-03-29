@@ -43,5 +43,5 @@ export function createData() {
 }
 
 export function getIp(req){
-    return req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    return req.ip;
 }
