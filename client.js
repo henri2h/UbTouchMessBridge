@@ -80,6 +80,7 @@ export function getThreadInfo(api, threadID) {
 
 export function getThreadHistory(api, threadID, timestamp, count) {
     return new Promise(resolve => {
+        if(timestamp == "none"){timestamp = undefined;}
         api.getThreadHistory(threadID, count, timestamp, (err, history) => {
             // in case of error
             if (err) return console.error(err);
