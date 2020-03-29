@@ -152,20 +152,17 @@ app.use(function (req, res, next) {
     next();
 });
 
+// TODO : there is currently to much copy and paste here...
+// we should work on preventing this code duplication !!
+
 
 // functions :
 // check if all is well setup : use this to check if https is properly set
 app.get("/", (req, res, next) => { res.json({ "success": true }); });
 
 app.post("/listConversations", async (req, res, next) => {
-
-
-    console.log(req);
-    console.log(res);
-    console.log(next);
-
     if (req.body.token == token) {
-        logger.info("[" + getIp() + "] /listConversation");
+        logger.info("[" + getIp(req) + "] /listConversation");
         res.json(await cl.listData(api));
     }
     else {
@@ -175,7 +172,7 @@ app.post("/listConversations", async (req, res, next) => {
 
 app.post("/getThreadHistory", async (req, res, next) => {
     if (req.body.token == token) {
-        logger.info("[" + getIp() + "] /getThreadHistory");
+        logger.info("[" + getIp(req) + "] /getThreadHistory");
         res.json(await cl.getThreadHistory(api, req.body.threadID, req.body.timestamp, req.body.messageCount));
     }
     else {
@@ -186,12 +183,12 @@ app.post("/getThreadHistory", async (req, res, next) => {
 
 app.post("/getThreadInfo", async (req, res, next) => {
     if (req.body.token == token) {
-        logger.info("[" + getIp() + "] /getThreadInfo");
+        logger.info("[" + getIp(req) + "] /getThreadInfo");
         res.json(await cl.getThreadInfo(api, req.body.threadID));
     }
     else {
 
-        logger.warn("[" + getIp() + "] /getThreadInfo : wrong token");
+        logger.warn("[" + getIp(req) + "] /getThreadInfo : wrong token");
         res.json({ "success": false, "error": "bad token" });
     }
 });
@@ -199,44 +196,44 @@ app.post("/getThreadInfo", async (req, res, next) => {
 // user
 app.post("/getUserID", async (req, res, next) => {
     if (req.body.token == token) {
-        logger.info("[" + getIp() + "] /getUserID");
+        logger.info("[" + getIp(req) + "] /getUserID");
         res.json(await cl.getUserID(api, req.body.name));
     }
     else {
-        logger.warn("[" + getIp() + "] /getUserID : wrong token");
+        logger.warn("[" + getIp(req) + "] /getUserID : wrong token");
         res.json({ "success": false, "error": "bad token" });
     }
 });
 
 app.post("/getUserInfo", async (req, res, next) => {
     if (req.body.token == token) {
-        logger.info("[" + getIp() + "] /getUserInfo");
+        logger.info("[" + getIp(req) + "] /getUserInfo");
         res.json(await cl.getUserInfo(api, req.body.id));
     }
     else {
-        logger.warn("[" + getIp() + "] /getUserInfo : wrong token");
+        logger.warn("[" + getIp(req) + "] /getUserInfo : wrong token");
         res.json({ "success": false, "error": "bad token" });
     }
 });
 
 app.post("/searchForThread", async (req, res, next) => {
     if (req.body.token == token) {
-        logger.info("[" + getIp() + "] /searchForThread");
+        logger.info("[" + getIp(req) + "] /searchForThread");
         res.json(await cl.searchForThread(api, req.body.name));
     }
     else {
-        logger.warn("[" + getIp() + "] /searchForThread : wrong token");
+        logger.warn("[" + getIp(req) + "] /searchForThread : wrong token");
         res.json({ "success": false, "error": "bad token" });
     }
 });
 
 app.post("/getCurrentUserID", async (req, res, next) => {
     if (req.body.token == token) {
-        logger.info("[" + getIp() + "] /getCurretUserID");
+        logger.info("[" + getIp(req) + "] /getCurretUserID");
         res.json(await cl.getCurrentUserID(api));
     }
     else {
-        logger.warn("[" + getIp() + "] /getCurrentUserID : wrong token");
+        logger.warn("[" + getIp(req) + "] /getCurrentUserID : wrong token");
         res.json({ "success": false, "error": "bad token" });
     }
 });
@@ -245,11 +242,11 @@ app.post("/getCurrentUserID", async (req, res, next) => {
 // messages...
 app.post("/sendMessage", async (req, res, next) => {
     if (req.body.token == token) {
-        logger.info("[" + getIp() + "] /sendMessage");
+        logger.info("[" + getIp(req) + "] /sendMessage");
         res.json(await cl.sendMessage(api, req.body.text, req.body.threadID));
     }
     else {
-        logger.warn("[" + getIp() + "] /sendMessage : wrong token");
+        logger.warn("[" + getIp(req) + "] /sendMessage : wrong token");
         res.json({ "success": false, "error": "bad token" });
     }
 });
@@ -266,11 +263,11 @@ app.post("/setMessageReaction", async (req, res, next) => {
 
 app.post("/setTitle", async (req, res, next) => {
     if (req.body.token == token) {
-        logger.info("[" + getIp() + "] /setTitle");
+        logger.info("[" + getIp(req) + "] /setTitle");
         res.json(await cl.setTitle(api, req.body.newTitle, req.body.threadID));
     }
     else {
-        logger.warn("[" + getIp() + "] /setTitle : wrong token");
+        logger.warn("[" + getIp(req) + "] /setTitle : wrong token");
         res.json({ "success": false, "error": "bad token" });
     }
 });
