@@ -141,12 +141,12 @@ cl.connect(logger, (data) => {
         });
     }
 });
-var uID;
+var uID = "";
 
 cl.getCurrentUserID(api).then((val) => {
     logger.info("Logged user id : " + uiID);
     uID = val;
-}).catch((err) => logger.error(JSON.stringify(err)));
+}).catch((err) => { logger.error("Could not get user id"); console.error(err); });
 
 // enable cross origin
 app.use(function (req, res, next) {
