@@ -95,7 +95,7 @@ export function getThreadHistory(api, threadID, timestamp, count) {
 
 
 // user :
-export function getCurrentUserID(api, name) {
+export function getCurrentUserID(api) {
     return new Promise(resolve => {
         api.getCurrentUserID((err, obj) => {
             // in case of error

@@ -226,7 +226,7 @@ app.post("/searchForThread", async (req, res, next) => {
 
 app.post("/getCurrentUserID", async (req, res, next) => {
     if (req.body.token == token) {
-        logger.info("[" + getIp(req) + "] /getCurretUserID");
+        logger.info("[" + getIp(req) + "] /getCurrentUserID");
         res.json(await cl.getCurrentUserID(api));
     }
     else {
