@@ -162,7 +162,7 @@ app.get("/", (req, res, next) => { res.json({ "success": true }); });
 app.post("/listConversations", async (req, res, next) => {
     if (req.body.token == token) {
         logger.info("[" + getIp(req) + "] /listConversation");
-        res.json(await cl.listData(api));
+        res.json(await cl.listData(api, req.body.count, req.body.timestamp, req.body.tags));
     }
     else {
         res.json({ "success": false, "error": "bad token" });
@@ -226,10 +226,10 @@ app.post("/searchForThread", async (req, res, next) => {
     }
 });
 
-app.post("/getCurrentUserID", async (req, res, next) => {
+app.post("/getCurrentUserID", (req, res, next) => {
     if (req.body.token == token) {
         logger.info("[" + getIp(req) + "] /getCurrentUserID");
-        res.json(await cl.getCurrentUserID());
+        res.json(cl.getCurrentUserID(api));
     }
     else {
         logger.warn("[" + getIp(req) + "] /getCurrentUserID : wrong token");

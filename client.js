@@ -56,9 +56,9 @@ export function connect(logger, callback) {
 }
 
 // threads
-export function listData(api) {
+export function listData(api, count, timestamp, tags) {
     return new Promise(resolve => {
-        api.getThreadList(10, null, [], (err, list) => {
+        api.getThreadList(count, timestamp, tags, (err, list) => {
             // in case of error
             if (err) return console.error(err);
             resolve(list);
@@ -97,13 +97,7 @@ export function getThreadHistory(api, threadID, timestamp, count) {
 
 // user :
 export function getCurrentUserID(api) {
-    return new Promise(resolve => {
-        api.getCurrentUserID((err, obj) => {
-            // in case of error
-            if (err) return console.error(err);
-            resolve(obj);
-        });
-    });
+    return api.getCurrentUserID();
 }
 
 export function getUserID(api, name) {
