@@ -20,7 +20,7 @@
   "dependencies": {
     "esm": "^3.2.25",
     "express": "^4.17.1",
-    "facebook-chat-api": "git+https://github.com/Schmavery/facebook-chat-api.git",
+    "facebook-chat-api": "git+https://github.com/Henri2h/facebook-chat-api.git",
     "node-fetch": "^2.6.0",
     "sqlite3": "^4.1.1",
     "winston": "^3.2.1",
