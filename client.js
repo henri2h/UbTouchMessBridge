@@ -32,7 +32,7 @@ export function connect(logger, callback) {
             selfListen: false,
             listenEvents: false,
             forceLogin:true,
-            userAgent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:74.0) Gecko/20100101 Firefox/74.0"
+            //userAgent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:74.0) Gecko/20100101 Firefox/74.0"
         };
 
         login(data, params, (err, api) => {
