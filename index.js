@@ -218,7 +218,7 @@ app.post("/getUserInfo", async (req, res, next) => {
 app.post("/searchForThread", async (req, res, next) => {
     if (req.body.token == token) {
         logger.info("[" + getIp(req) + "] /searchForThread");
-        res.json(await cl.searchForThread(api, req.body.name, req.body.num_users, req.body.num_groups, req.body.num_page));
+        res.json(await cl.searchForThread(api, req.body.name, req.body.num_users, req.body.num_groups, req.body.num_pages));
     }
     else {
         logger.warn("[" + getIp(req) + "] /searchForThread : wrong token");
