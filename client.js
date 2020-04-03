@@ -123,7 +123,7 @@ export function getUserInfo(api, id) {
 
 export function searchForThread(api, name, num_users, num_groups, num_pages) {
     return new Promise(resolve => {
-        api.searchForThread(name, num_users, num_groups, num_page, (err, obj) => {
+        api.searchForThread(name, num_users, num_groups, num_pages, (err, obj) => {
             // in case of error
             if (err) return console.error(err);
             resolve(obj);
