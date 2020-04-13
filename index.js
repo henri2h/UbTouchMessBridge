@@ -25,43 +25,6 @@ const myFormat = format.printf((info) => {
     return log;
 });
 
-const inlineFormat = (info) => {
-    var message = info.message;
-    console.log(message);
-    if (typeof message == 'object') {
-        message = JSON.stringify(message);
-    }
-
-    if (info.message instanceof Error) {
-        console.log("Instance of s error");
-        console.log(info.message);
-        console.log(info.message.stack);
-    }
-
-    if (info instanceof Error) {
-        console.log("Instance of error");
-
-        console.log(info.message);
-        console.log(info.stack);
-    }
-
-
-    var data = {};
-    var data_usefull = false;
-    for (var propertyName in info) {
-        if (["level", "timestamp", "message"].indexOf(propertyName) == -1) {
-            data[propertyName] = info[propertyName];
-            data_usefull = true;
-        }
-
-    }
-    var dataResult = "";
-    if (data_usefull)
-        dataResult = " : " + JSON.stringify(data, null, 2);
-
-    return info.timestamp + " - " + info.level + " : " + message + dataResult;
-};
-
 const logger = createLogger({
     level: 'info',
     format: format.combine(

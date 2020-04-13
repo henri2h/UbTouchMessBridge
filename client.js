@@ -42,10 +42,10 @@ export function connect(logger_in, callback) {
                 logger.error("If not, your account may have been banned");
                 fs.unlink(fileName, function (err) {
                     //Do whatever else you need to do here
-                    if (err != null) logger.error("Could not unlink file : ", JSON.stringify(err));
+                    if (err != null) logger.error("Could not unlink file : ", err);
                 });
 
-                logger.error(JSON.stringify(err));
+                logger.error(err);
                 callback({ success: false, error: err });
                 return;
             }
