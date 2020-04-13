@@ -8,14 +8,59 @@ var http = require('http');
 var https = require('https');
 
 const control = require("./controlServer");
-
+const colorize = require('json-colorizer');
 // logger
 import { createLogger, format, transports } from "winston";
-import winston from "winston/lib/winston/config";
 
-const myFormat = format.printf(({ level, message, timestamp }) => {
-    return `${level} : ${timestamp} : ${message}`;
+const myFormat = format.printf((info) => {
+    const { timestamp: tmsmp, level, message, stack, ...rest } = info;
+    let log = `${tmsmp} - ${level}:\t${message}`;
+    // Only if there is an error
+
+    if (stack != undefined) log = `${log}\n ${stack}`;
+    // Check if rest is object
+    if (!(Object.keys(rest).length === 0 && rest.constructor === Object)) {
+        log = `${log}\n${colorize(JSON.stringify(rest, null, 2))}`;
+    }
+    return log;
 });
+
+const inlineFormat = (info) => {
+    var message = info.message;
+    console.log(message);
+    if (typeof message == 'object') {
+        message = JSON.stringify(message);
+    }
+
+    if (info.message instanceof Error) {
+        console.log("Instance of s error");
+        console.log(info.message);
+        console.log(info.message.stack);
+    }
+
+    if (info instanceof Error) {
+        console.log("Instance of error");
+
+        console.log(info.message);
+        console.log(info.stack);
+    }
+
+
+    var data = {};
+    var data_usefull = false;
+    for (var propertyName in info) {
+        if (["level", "timestamp", "message"].indexOf(propertyName) == -1) {
+            data[propertyName] = info[propertyName];
+            data_usefull = true;
+        }
+
+    }
+    var dataResult = "";
+    if (data_usefull)
+        dataResult = " : " + JSON.stringify(data, null, 2);
+
+    return info.timestamp + " - " + info.level + " : " + message + dataResult;
+};
 
 const logger = createLogger({
     level: 'info',
@@ -23,15 +68,21 @@ const logger = createLogger({
         format.colorize(),
         format.timestamp(),
         myFormat
+        //format.printf(inlineFormat)
     ),
-    defaultMeta: { service: 'user-service' },
     transports: [
         //
         // - Write all logs with level `error` and below to `error.log`
         // - Write all logs with level `info` and below to `combined.log`
         //
-        new transports.File({ filename: 'error.log', level: 'error' }),
-        new transports.File({ filename: 'combined.log' })
+        new transports.File({
+            filename: 'error.log', level: 'error',
+            handleExceptions: true
+        }),
+        new transports.File({
+            filename: 'combined.log',
+            handleExceptions: true
+        })
     ]
 });
 
@@ -40,9 +91,11 @@ const logger = createLogger({
 // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
 // 
 if (process.env.NODE_ENV !== 'production') {
-    logger.add(new transports.Console());
+    logger.add(new transports.Console({
+        timestamp: true,
+        handleExceptions: true
+    }));
 }
-logger.info("hello", { test: "x" });
 
 // first run ?
 if (getData() == "created") {
@@ -108,13 +161,13 @@ cl.connect(logger, (data) => {
                         console.log(event.threadID + " : " + event.body);
 
                         var uinfo = await cl.getUserInfo(api, event.senderID).catch(err => {
-                            console.log(err);
+                            logger.error(err);
                         });
 
                         var title = "";
                         if (event.isGroup) { // group
                             var tinfo = await cl.getThreadInfo(api, event.threadID).catch(err => {
-                                console.log(err);
+                                logger.error(err);
                             });;
                             title = uinfo[event.senderID].name + "@" + tinfo.name
                         }
@@ -136,7 +189,7 @@ cl.connect(logger, (data) => {
                 }
             } catch (erro) {
                 // in case of error
-                console.log(error);
+                logger.error(error);
             }
 
         });

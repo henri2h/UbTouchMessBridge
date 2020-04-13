@@ -107,3 +107,5 @@ dist
 .vscode/
 fappstate.json
 data.json
+yarn.lock
+package-lock.json

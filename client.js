@@ -1,6 +1,7 @@
 import login from "facebook-chat-api";
 import fs from "fs";
 import { json } from "express";
+var logger;
 
 const control = require("./controlServer");
 
@@ -11,8 +12,8 @@ export default function () {
     return "";
 }
 
-export function connect(logger, callback) {
-
+export function connect(logger_in, callback) {
+    logger = logger_in;
     // Create simple echo bot
     fs.exists(fileName, fileExist => {
         logger.info("File exist : " + fileExist);
@@ -41,7 +42,7 @@ export function connect(logger, callback) {
                 logger.error("If not, your account may have been banned");
                 fs.unlink(fileName, function (err) {
                     //Do whatever else you need to do here
-                    if (err != null) logger.error("Could not unlink file : "  +JSON.stringify(err));
+                    if (err != null) logger.error("Could not unlink file : ", JSON.stringify(err));
                 });
 
                 logger.error(JSON.stringify(err));
@@ -60,7 +61,7 @@ export function listData(api, count, timestamp, tags) {
     return new Promise(resolve => {
         api.getThreadList(count, timestamp, tags, (err, list) => {
             // in case of error
-            if (err) return console.error(err);
+            if (err) return logger.error(err);
             resolve(list);
         });
     });
@@ -71,7 +72,7 @@ export function getThreadInfo(api, threadID) {
     return new Promise(resolve => {
         api.getThreadInfo(threadID, (err, info) => {
             // in case of error
-            if (err) return console.error(err);
+            if (err) return logger.error(err);
             resolve(info);
         });
     });
@@ -83,7 +84,7 @@ export function getThreadHistory(api, threadID, timestamp, count) {
         if(timestamp == "none"){timestamp = undefined;}
         api.getThreadHistory(threadID, count, timestamp, (err, history) => {
             // in case of error
-            if (err) return console.error(err);
+            if (err) return logger.error(err);
             /*
             Since the timestamp is from a previous loaded message,
             that message will be included in this history so we can discard it unless it is the first load.
@@ -104,7 +105,7 @@ export function getUserID(api, name) {
     return new Promise(resolve => {
         api.getUserID(name, (err, obj) => {
             // in case of error
-            if (err) return console.error(err);
+            if (err) return logger.error(err);
             resolve(obj);
         });
     });
@@ -114,7 +115,7 @@ export function getUserInfo(api, id) {
     return new Promise(resolve => {
         api.getUserInfo(id, (err, obj) => {
             // in case of error
-            if (err) return console.error(err);
+            if (err) return logger.error(err);
             resolve(obj);
         });
     });
@@ -125,7 +126,7 @@ export function searchForThread(api, name, num_users, num_groups, num_pages) {
     return new Promise(resolve => {
         api.searchForThread(name, num_users, num_groups, num_pages, (err, obj) => {
             // in case of error
-            if (err) return console.error(err);
+            if (err) return logger.error(err);
             resolve(obj);
         });
     });
@@ -143,7 +144,7 @@ export function sendMessage(api, text, threadID) {
         var msg = { body: text };
         api.sendMessage(msg, threadID, (err, result) => {
             // in case of error
-            if (err) return console.error(err);
+            if (err) return logger.error(err);
             resolve(result);
         });
     });
@@ -155,7 +156,7 @@ export function setMessageReaction(api, reaction, messageId) {
     return new Promise(resolve => {
         api.setMessageReaction(reaction, messageId, (err, obj) => {
             // in case of error
-            if (err) return console.error(err);
+            if (err) return logger.error(err);
             resolve(obj);
         });
     });
@@ -166,7 +167,7 @@ export function setTitle(api, newTitle, threadID) {
     return new Promise(resolve => {
         api.setTitle(newTitle, threadID, (err, obj) => {
             // in case of error
-            if (err) return console.error(err);
+            if (err) return logger.error(err);
             resolve(obj);
         });
     });
@@ -177,7 +178,7 @@ export function logout(api) {
     return new Promise(resolve => {
         api.logout((err, obj) => {
             // in case of error
-            if (err) return console.error(err);
+            if (err) return logger.error(err);
             resolve(obj);
         });
     });
