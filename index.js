@@ -13,14 +13,16 @@ const colorize = require('json-colorizer');
 import { createLogger, format, transports } from "winston";
 
 const myFormat = format.printf((info) => {
-    const { timestamp: tmsmp, level, message_in, stack, ...rest } = info;
-    var message = message_in;
+    const { timestamp: tmsmp, level, message, stack, ...rest } = info;
+    
+    // format message
+    var message_in = message;
     if (typeof message == 'object') {
-        message = JSON.stringify(message);
+        message_in = JSON.stringify(message);
     }
-    let log = `${tmsmp} - ${level}:\t${message}`;
+    let log = `${tmsmp} - ${level}:\t${message_in}`;
+    
     // Only if there is an error
-
     if (stack != undefined) log = `${log}\n ${stack}`;
     // Check if rest is object
     if (!(Object.keys(rest).length === 0 && rest.constructor === Object)) {
