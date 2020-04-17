@@ -89,7 +89,7 @@ export function getThreadHistory(api, threadID, timestamp, count) {
             Since the timestamp is from a previous loaded message,
             that message will be included in this history so we can discard it unless it is the first load.
         */
-            if (timestamp != undefined) history.pop();
+            if (timestamp != undefined) history.messages.pop();
             resolve(history);
         });
     });
