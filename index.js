@@ -122,6 +122,7 @@ cl.connect(logger, (data) => {
             try {
                 if (err) {
                     logger.error("Listening : error", err);
+                    logger.error(err);
                 }
 
                 switch (event.type) {
@@ -156,7 +157,7 @@ cl.connect(logger, (data) => {
                         break;
                     // case presence...
                 }
-            } catch (erro) {
+            } catch (error) {
                 // in case of error
                 logger.error(error);
             }
