@@ -1,4 +1,6 @@
 # UbTouchMessBridge (EXPERIMENTAL !!)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FHenri2h%2FUbTouchMessBridge.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FHenri2h%2FUbTouchMessBridge?ref=badge_shield)
+
 
 A facebook messenger bridge for the ubuntu touch operating system
 Insipired by [this thread](https://forums.ubports.com/topic/3126/facebook-messenger-push-notifications)
@@ -16,3 +18,7 @@ Setup your facebook account informations in the data.json files
 
 # Setup push notification
 Replace the token id in push notification with yours
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FHenri2h%2FUbTouchMessBridge.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FHenri2h%2FUbTouchMessBridge?ref=badge_large)
