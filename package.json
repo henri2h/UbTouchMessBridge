@@ -23,7 +23,7 @@
     "facebook-chat-api": "git+https://github.com/Henri2h/facebook-chat-api.git#ReadIndicator",
     "json-colorizer": "^2.2.1",
     "node-fetch": "^2.6.0",
-    "sqlite3": "^4.2.0",
+    "sqlite3": "^5.0.0",
     "winston": "^3.3.3"
   }
 }
